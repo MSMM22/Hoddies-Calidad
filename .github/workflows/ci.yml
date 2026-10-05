@@ -1,0 +1,27 @@
+name: CI - Calidad de Software
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  quality:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ms-backend-ts-users
+    steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Instalar dependencias
+        run: npm install
+      - name: Ejecutar ESLint
+        run: npm run lint
+      - name: Ejecutar pruebas
+        run: npm test -- --runInBand
+        env:
+          JWT_SECRET: secreto-solo-para-pruebas
